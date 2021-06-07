@@ -6,8 +6,10 @@ const TaskModelSchema = new Schema({
     checked: {
         type: Boolean,
         default: false
-    }
+    },
+    userId: String,
 });
+
 
 const TaskModel = mongoose.model('TaskModel', TaskModelSchema );
 

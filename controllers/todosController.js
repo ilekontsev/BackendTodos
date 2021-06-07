@@ -1,12 +1,23 @@
 const TaskModel = require('../models/TaskModel')
+const UserModel = require('../models/UserModel')
+const jwt = require('jsonwebtoken');
 
-const createTaskInBD = async (req, res) => {
+const createTaskInDb = async (req, res) => {
+    try{
+        const decoded = jwt.verify(req.headers.authorization, 'test123')
+        const id = decoded.userId
+
+
+
     const task = !!req.body && req.body;
+
     if (!task || !task.text) {
         return res.status(400).send("no data")
     }
-    try {
+
+        task.userId = id
         const createdTask = await TaskModel.create(task)
+
         res.send(createdTask._id)
     } catch (err) {
         res.send(err).status(500)
@@ -14,9 +25,20 @@ const createTaskInBD = async (req, res) => {
 }
 
 const getAllTasked = (req, res) => {
-    TaskModel.find({}).then((tasks) => {
-        res.send(tasks);
-    });
+    const token = req.headers.authorization
+    console.log(req.headers.authorization)
+
+    try{
+        const decoded = jwt.verify(token, "test123")
+        const id = decoded.userId
+        TaskModel.find({userId: id}).then((tasks) => {
+            res.send(tasks);
+        });
+    }catch(err){
+        res.status(401).send(err)
+    }
+
+
 
 }
 
@@ -32,7 +54,7 @@ const updateTaskChecked = async (req, res) => {
         res.status(400).send(err)
     }
 }
-updateTaskCheckedAll = async(req, res) => {
+const updateTaskCheckedAll = async(req, res) => {
     const params = req.body
     try{
         await TaskModel.updateMany({ checked: !params.checked }, { $set: {checked: params.checked}})
@@ -66,7 +88,7 @@ const deleteAllCompleteTask = async(req, res) =>{
 }
 
 module.exports = {
-    createTaskInBD,
+    createTaskInDb,
     getAllTasked,
     delTask,
     updateTaskChecked,

@@ -3,8 +3,7 @@ const todosRouter = express.Router();
 
 const todosController = require('../controllers/todosController')
 
-
-todosRouter.post('/', todosController.createTaskInBD)
+todosRouter.post('/', todosController.createTaskInDb)
 todosRouter.get('/', todosController.getAllTasked)
 todosRouter.put('/', todosController.updateTaskChecked)
 todosRouter.put('/all', todosController.updateTaskCheckedAll)

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors')
 const todosRouter = require('./routes/todosRouter')
 const mongoose = require('mongoose')
+const UserRouter = require('./routes/UserRouter')
+
 
 const port = 3000;
 const app = express();
@@ -17,6 +19,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/my_database', {
 })
 
 app.use('/', todosRouter)
+app.use('/', UserRouter)
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
