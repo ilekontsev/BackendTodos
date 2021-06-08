@@ -1,14 +1,17 @@
 const express = require('express');
 const todosRouter = express.Router();
-
 const todosController = require('../controllers/todosController')
 
-todosRouter.post('/', todosController.createTaskInDb)
-todosRouter.get('/', todosController.getAllTasked)
-todosRouter.put('/', todosController.updateTaskChecked)
+
+
+
+todosRouter.post('/createTask', todosController.createTaskInDb)
+todosRouter.get('/getTasks', todosController.getAllTasked)
+todosRouter.put('/updCheckbox', todosController.updateTaskChecked)
 todosRouter.put('/all', todosController.updateTaskCheckedAll)
 todosRouter.delete('/delete', todosController.delTask)
 todosRouter.delete('/deleteAll', todosController.deleteAllCompleteTask)
+
 
 
 module.exports = todosRouter;
